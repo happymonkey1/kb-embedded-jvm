@@ -1,0 +1,20 @@
+directories:
+  # Add the directories you want added as source here
+  # By default, we've added your entire workspace ('.')
+  .
+  kb-jvm/vendor/amazon-corretto-21.0.3.9.1-linux-x64/include/
+
+# Automatically includes all relevant targets under the 'directories' above
+derive_targets_from_directories: true
+
+targets:
+  # If source code isn't resolving, add additional targets that compile it here
+  //kb-jvm:kb-jvm-cppbuild
+  //kb-jvm:kb-jvm-cli-example
+
+additional_languages:
+  # Uncomment any additional languages you want supported
+  # dart
+  # javascript
+  # python
+  # typescript

@@ -1,0 +1,13 @@
+/bazel-bin
+/bazel-kb-embedded-jvm
+/bazel-out
+/bazel-testlogs
+/kb-jvm/vendor/
+*.iml
+/jvm-examples/.idea/
+/jvm-examples/java-gradle-example/build/
+/jvm-examples/java-gradle-example/.gradle/
+/.kb-cppbuild/
+/kb-jvm/.kb-cppbuild/
+/.idea
+/*.log

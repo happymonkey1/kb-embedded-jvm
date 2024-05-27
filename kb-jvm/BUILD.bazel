@@ -1,0 +1,32 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "kb-jvm",
+    srcs = glob(
+        ["src/**/*.cpp"],
+        exclude = ["src/kablunk/kb_jvm_build.cpp", "src/kablunk/kb-jvm/kb_jvm_entrypoint.cpp"]
+    ),
+    includes = [
+        "include",
+        "src",
+        "vendor/amazon-corretto-21.0.3.9.1-linux-x64/include",
+        # TODO: this is not platform agnostic...
+        "vendor/amazon-corretto-21.0.3.9.1-linux-x64/include/linux"
+    ],
+    copts = [
+        "-Ikb-embedded-jvm/kb-jvm/vendor/amazon-corretto-21.0.3.9.1-linux-x64/include",
+        "-Ikb-embedded-jvm/kb-jvm/vendor/amazon-corretto-21.0.3.9.1-linux-x64/include/linux"
+    ]
+)
+
+cc_binary(
+    name = "kb-jvm-cli-example",
+    srcs = ["src/kablunk/kb-jvm/kb_jvm_entrypoint.cpp"],
+    deps = ["//kb-jvm"]
+)
+
+cc_binary(
+    name = "kb-jvm-cppbuild",
+    srcs = ["src/kablunk/kb_jvm_build.cpp"],
+    deps = ["//kb-cppbuild"]
+)
