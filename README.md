@@ -14,6 +14,7 @@ any extra build tools (see Why there are `Bazel` files below, if you are curious
 
 # Dependencies
 - c++20 toolchain (ex: g++13)
+- Amazon Corretto 21 (JDK 21)
 
 # Platform support
 - Linux (Yes, Tested on Ubuntu 22.04)
@@ -22,12 +23,22 @@ any extra build tools (see Why there are `Bazel` files below, if you are curious
 
 # Building from source
 
-First we need to build our build system from source. 
-
+First we need to build our build system from source.
 - `g++ PATH_TO_CPP_BUILD_SCRIPT -I PATH_TO_CPPBUILD_HEADER -o OUTPUT_NAME -std=c++20`
-  - Example from `kb-embedded-jvm` root: `g++ ./kb-jvm/src/kablunk/kb_jvm_build.cpp -Ikb-cppbuild/include/ -o kb_jvm_build -std=c++20`
+- Example from `kb-embedded-jvm` root: `g++ ./kb-jvm/src/kablunk/kb_jvm_build.cpp -Ikb-cppbuild/include/ -o kb_jvm_build -std=c++20`  
+There is also an helper script: `/kb-jvm/scripts/build-kb-cppbuild-for-kb-jvm.sh` which can bootsrap the build system.
+- By default, this creates a build directory `.kb-cppbuild` and puts the build system executable there.
 
-Once built, we can run our build system program to build `kb-jvm`
+`kb-jvm` requires two environment variables to be set
+  - `KB_JVM_PROJECT_PATH` set to the root of the `kb-jvm` project
+  - `KB_JAVA_PROJECT_PATH` set to the root of the java project to be loaded by jni (Example: `java-gradle-example`)
+
+We also need to retrieve Java 21 JDK as a dependency.  
+There is an included helper script `kb-jvm/scripts/get-vendors.sh` to do this automatically.
+The script must be run from the root of the entire repository (`kb-embedded-jvm`).
+Example: `cd PATH/TO/kb-embedded-jvm && ./kb-jvm/scripts/get-vendors.sh`
+
+Once our build system is built, we can run it to build `kb-jvm`
 Example: `./.kb-cppbuild/kb-cppbuild-kb-jvm`
 
 ## Building with Bazel
@@ -46,7 +57,11 @@ For posterity's sake, the commands to use Bazel are:
 - `error while loading shared libraries: libjvm.so: cannot open shared object file: No such file or directory`
   - Set `LD_LIBRARY_PATH` with the path to `libjvm.so` before running the executable
 
+## Why Write This?
+
+I like doing hobby project in c++, and wanted to explore embedding Java as that is something I might implement for my Game Engine ([Kablunk Engine](https://github.com/happymonkey1/KablunkEngine))
+
 ## Why Bazel?
 
-Well, I did not want to code without ide support, so I included Bazel :P
-This project *should* (while `kb-cppbuild` is being worked on, Bazel is required to bootstrap) not need Bazel to compile
+Well, I did not want to code without ide support, so I included Bazel :P  
+This project not need Bazel to compile.
